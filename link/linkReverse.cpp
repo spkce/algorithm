@@ -6,11 +6,10 @@ struct singleNode_t
 	int data;
 };
 
-
-//单向链表反转
 class singlelist
 {
 public:
+	//单向链表反转
 	singleNode_t* reverse(singleNode_t* head)
 	{
 		singleNode_t* newHead = NULL;
