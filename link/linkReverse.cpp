@@ -107,9 +107,37 @@ public:
 		return head;
 	}
 
-	singleNode_t* merge(singleNode_t* a, singleNode_t* b)
+	singleNode_t* merge(singleNode_t* pA, singleNode_t* pB)
 	{
+		singleNode_t* head = pB;
+		while (pA != NULL)
+		{
+			singleNode_t* tempA = pA;
+			singleNode_t* lastB = NULL;
+			pA = pA->next;
+			pB = head;
+			
+			while (pB != NULL)
+			{
+				if ( tempA->data < pB->data)
+				{
+					if (lastB == NULL)
+					{
+						head = tempA;
+					}
+					else
+					{
+						lastB->next = tempA;
+					}
+					tempA->next = pB;
+					break;
+				}
+				lastB = pB;
+				pB = pB->next;
+			}
+		}
 		
+		return head;
 	}
 };
 
@@ -147,6 +175,7 @@ int main(int argc, char const *argv[])
 		}
 	}
 
+	if (0)
 	{
 		singleNode_t *pHead = new singleNode_t;
 		pHead->data = 0;
@@ -171,6 +200,59 @@ int main(int argc, char const *argv[])
 		printf("sort:\n");
 		singlelist a;
 		p = a.sort(pHead);
+		while (p != NULL)
+		{
+			printf("p = %p p->next = %p, p->data = %d \n", p, p->next, p->data);
+			p = p->next;
+		}
+		printf("\n");
+	}
+
+
+	{
+		singleNode_t *pA = new singleNode_t;
+		pA->data = 0;
+		pA->next = NULL;
+		singleNode_t *p = pA;
+		for (int i = 1; i < 10; i++)
+		{
+			
+			p->next = new singleNode_t;
+			p = p->next;
+			p->data = i;
+			p->next = NULL;
+		}
+		
+		p = pA;
+		while (p != NULL)
+		{
+			printf("pA = %p pA->next = %p, pA->data = %d \n", p, p->next, p->data);
+			p = p->next;
+		}
+
+		singleNode_t *pB = new singleNode_t;
+		pB->data = 0;
+		pB->next = NULL;
+		p = pB;
+		for (int i = 1; i < 10; i++)
+		{
+			
+			p->next = new singleNode_t;
+			p = p->next;
+			p->data = i+10;
+			p->next = NULL;
+		}
+
+		p = pB;
+		while (p != NULL)
+		{
+			printf("pB = %p pB->next = %p, pB->data = %d \n", p, p->next, p->data);
+			p = p->next;
+		}
+
+		printf("sort:\n");
+		singlelist a;
+		p = a.merge(pA, pB);
 		while (p != NULL)
 		{
 			printf("p = %p p->next = %p, p->data = %d \n", p, p->next, p->data);
