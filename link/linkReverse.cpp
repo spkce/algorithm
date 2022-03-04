@@ -40,71 +40,63 @@ public:
 		return i;
 	}
 
-	singleNode_t* sort(singleNode_t* head)
+	singleNode_t* swap(singleNode_t* pfront, singleNode_t* p)
 	{
-		if (head == NULL || head->next == NULL)
+		singleNode_t* temp = p->next;
+		if (temp == NULL)
 		{
-			return head;
+			return p;
 		}
 
-		singleNode_t* pMin = head;
-		singleNode_t* pMinLast = NULL;
-
-		singleNode_t* pi = head;
-		singleNode_t* piLast = NULL;
-
-		while (pi->next != NULL)
+		if (pfront)
 		{
-			printf("pi = %p pi->next = %p, pi->data = %d \n", pi, pi->next, pi->data);
-			singleNode_t* pj = pi->next;
-			singleNode_t* pjLast = pi;
-			pMin = pi->next;
-			pMinLast = pi;
-			while(pj != NULL)
+			pfront->next = temp;
+			p->next = temp->next;
+			temp->next = p;
+		}
+		else
+		{
+			p->next = temp->next;
+			temp->next = p;
+		}
+		return temp;
+	}
+
+	singleNode_t* sort(singleNode_t* phead, int n)
+	{
+		if (phead == NULL || phead->next == NULL)
+		{
+			return phead;
+		}
+		singleNode_t* pExt = new singleNode_t;
+		pExt->data = 0;
+		pExt->next = phead;
+	
+		//printf("\033[35m""pi:%p pih:%p""\033[0m\n", pi, pih);
+		
+		singleNode_t* pi;
+		singleNode_t* pif;
+	
+		for (int i = 0; i < n; i++)
+		{
+			pi = phead;
+			pif = pExt;
+	
+			while (pi->next != NULL)
 			{
-				if (pj->data < pMin->data)
+				if (pi->data > pi->next->data)
 				{
-					pMinLast = pjLast;
-					pMin = pj;
+					pi = swap(pif, pi);
 				}
-
-				pjLast = pj;
-				pj = pj->next;
-			}
-
-			if (pMin != pi)
-			{
-				printf("pMin = %p pMin->next = %p, pMin->data = %d \n", pMin, pMin->next, pMin->data);
-				printf("pMinLast = %p \n", pMinLast);
-				if (piLast != NULL)
-				{
-					piLast->next = pMin;
-				}
-				if (pMinLast != NULL)
-				{
-					pMinLast->next = pi;
-				}
-				
-				singleNode_t* temp = pi->next;
-				pi->next = pMin->next;
-				pMin->next = temp;
-
-				if (pi == head)
-				{
-					head = pMin;
-				}
-
-				pi = pMin->next;
-				piLast = pMin;
-			}
-			else
-			{
+				pif = pi;
 				pi = pi->next;
-				piLast = pi;
 			}
+			
 		}
-
-		return head;
+	
+		singleNode_t* pRet = pExt->next;
+		delete pExt;
+		return pRet;
 	}
 
 	singleNode_t* merge(singleNode_t* pA, singleNode_t* pB)
