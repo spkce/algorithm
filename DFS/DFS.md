@@ -96,4 +96,79 @@ public:
     }
 };
 ```
+```c++
+//使用栈实现DFS
+class Solution
+{
+public:
+ int res;
+	void dfs(std::vector<std::vector<int>> &grid,
+			 int mx, int my,
+			 int x, int y)
+	{
+
+		int dx[4] = {-1, 1, 0, 0};
+		int dy[4] = {0, 0, -1, 1};
+
+		std::stack<std::pair<int, int>> stk;
+		stk.push(std::make_pair(x,y));
+
+		while (!stk.empty())
+		{
+			std::pair<int, int> coor = stk.top();
+			stk.pop();
+			int x = coor.first;
+			int y = coor.second;
+			grid[x][y] = 2; // 标记上已经访问过的位置
+
+			for (int i = 0; i < 4; i++)
+			{
+				int nx = x + dx[i];
+				int ny = y + dy[i];
+
+				if (!isInGrid(nx, ny, mx, my))
+				{
+					res++; // 与边境相邻的边界
+					continue;
+				}
+
+				if (grid[nx][ny] == 0)
+				{
+					res++; // 与海相邻的边界
+				}
+				else if (grid[nx][ny] == 1)
+				{
+					stk.push(std::make_pair(nx,ny));
+				}
+			}
+		}
+	}
+
+	bool isInGrid(int x, int y, int mx, int my)
+	{
+		return x >= 0 && x < mx && y >= 0 && y < my;
+	}
+
+	int islandPerimeter(std::vector<std::vector<int>> &grid)
+	{
+		res = 0;
+		int mx = grid.size();
+		int my = grid[0].size();
+
+		for (int x = 0; x < mx; x++)
+		{
+			for (int y = 0; y < my; y++)
+			{
+				if (grid[x][y] == 1)
+				{
+					dfs(grid, mx, my, x, y);
+					return res;
+				}
+			}
+		}
+
+		return res;
+	}
+};
+```
 
