@@ -69,7 +69,7 @@ void bfs()
 	Node* pFristNode = new Node(0,0);
 	Q.push(pFristNode);
 
-	while (!Q.empty()
+	while (!Q.empty())
 	{
 		Node* node = Q.front();
 		CPosition temp;
